@@ -1,0 +1,23 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t kamarov12/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true kamarov12/react-test npm test
+
+after_success:
+  - docker build -t kamarov12/multi-client ./client
+  - docker build -t kamarov12/multi-nginx ./nginx
+  - docker build -t kamarov12/multi-server ./server
+  - docker build -t kamarov12/multi-worker ./worker
+#Log in to the docker CLI (lekéri a pw-t)
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --pasword-stdin
+#Take those images and push them to docker hub
+  - docker push kamarov12/multi-client
+  - docker push kamarov12/multi-nginx
+  - docker push kamarov12/multi-server
+  - docker push kamarov12/multi-worker
