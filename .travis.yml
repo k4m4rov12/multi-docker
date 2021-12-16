@@ -15,7 +15,7 @@ after_success:
   - docker build -t kamarov12/multi-server ./server
   - docker build -t kamarov12/multi-worker ./worker
 #Log in to the docker CLI (lekéri a pw-t)
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --pasword-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --pasword-stdin docker.io
 #Take those images and push them to docker hub
   - docker push kamarov12/multi-client
   - docker push kamarov12/multi-nginx
